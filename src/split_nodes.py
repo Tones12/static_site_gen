@@ -5,7 +5,6 @@ from extract_markdown import extract_markdown_images, extract_markdown_links
 def split_nodes_image(old_nodes):
     new_nodes = []
     for node in old_nodes:
-        print('node is:', node)
         node_text = node.text
         if node.text_type != TextType.TEXT:
             new_nodes.append(node)
