@@ -1,1 +1,1 @@
-python3 src/text_to_textnodes.py
+python3 src/markdown_to_blocks.py
