@@ -24,31 +24,40 @@ def markdown_to_html_node(markdown):
             children = text_to_children(cleaned_text)
             node =ParentNode(f"h{level}", children)
             block_nodes.append(node)
+        
         if block_type == BlockType.PARAGRAPH:
             children = text_to_children(cleaned_text)
             node = ParentNode("p", children)
             block_nodes.append(node)
+        
         if block_type == BlockType.CODE:
-            text_node = TextNode(cleaned_text, TextType.CODE)
+            text_node = TextNode(cleaned_text, TextType.TEXT)
             children = [text_node_to_html_node(text_node)]
-            node = ParentNode("pre", children)
+            code_node = ParentNode("code", children)
+            node = ParentNode("pre", [code_node])
             block_nodes.append(node)
+        
         if block_type == BlockType.QUOTE:
             children = text_to_children(cleaned_text)
             node = ParentNode("blockquote", children)
             block_nodes.append(node)
+        
         if block_type == BlockType.UNORDERED_LIST:
             children = []
-            for line in cleaned_text.split('\n'):
-                children.append(text_to_children(line))
+            for line in cleaned_text:
+                line_node = ParentNode("li", text_to_children(line))
+                children.append(line_node)
             node = ParentNode("ul", children)
             block_nodes.append(node)
+        
         if block_type == BlockType.ORDERED_LIST:
             children = []
-            for line in cleaned_text.split('\n'):
-                children.append(text_to_children(line))
+            for line in cleaned_text:
+                line_node = ParentNode("li", text_to_children(line))
+                children.append(line_node)
             node = ParentNode("ol", children)
             block_nodes.append(node)
+    
     block_parent = ParentNode("div", block_nodes)
     return block_parent
 
@@ -57,12 +66,10 @@ def markdown_to_html_node(markdown):
 
 def determine_heading_level(block):
     hash_count = 0
-
     heading_chars = block.split(' ',maxsplit=1)
-    print(heading_chars)
     if heading_chars[0][-1] != '#':
         return 0
-    for char in line:
+    for char in heading_chars[0]:
         if char == "#":
             hash_count += 1
         else:
@@ -85,24 +92,28 @@ def cleaner(text, block_type):
         cleaned_text = text[level + 1:].strip()
         return cleaned_text
     if block_type == BlockType.PARAGRAPH:
-        cleaned_text = text.strip()
+        cleaned_text = " ".join(text.split('\n'))
         return cleaned_text
     if block_type == BlockType.CODE:
-        cleaned_text = text[3:-3].strip()
+        cleaned_text = text[3:-3].lstrip('\n')
         return cleaned_text
     if block_type == BlockType.QUOTE:
-        cleaned_text = text[1:].strip()
+        cleaned_list = []
+        for line in text.split('\n'):
+            cleaned_line = line[1:].strip()
+            cleaned_list.append(cleaned_line)
+        cleaned_text = " ".join(cleaned_list)
         return cleaned_text
     if block_type == BlockType.UNORDERED_LIST:
-        cleaned_text = ''
+        cleaned_list = []
         for line in text.split('\n'):
             cleaned_line = line[2:].strip()
-            cleaned_text += cleaned_line + '\n'
-        return cleaned_text
+            cleaned_list.append(cleaned_line)
+        return cleaned_list
     if block_type == BlockType.ORDERED_LIST:
-        cleaned_text = ''
+        cleaned_list = []
         for line in text.split('\n'):
-            cleaned_line = line[3:].strip()
-            cleaned_text += cleaned_line + '\n'
-        return cleaned_text
+            cleaned_line = line.split(". ", 1)[1].strip()
+            cleaned_list.append(cleaned_line)
+        return cleaned_list
     
