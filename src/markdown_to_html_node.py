@@ -4,14 +4,6 @@ from htmlnode import HTMLNode, LeafNode, ParentNode
 from text_to_textnodes import text_to_textnodes
 from textnode import text_node_to_html_node, TextNode, TextType
 
-# HTMLNode inputs: tag=None, value=None, children=None, props=None
-# ParentNode inputs: (self, tag, children, props=None)
-# tag - A string representing the HTML tag name (e.g. "p", "a", "h1", etc.)
-# value - A string representing the value of the HTML tag (e.g. the text inside a paragraph)
-# children - A list of HTMLNode objects representing the children of this node
-# props - A dictionary of key-value pairs representing the attributes of the HTML tag.
-#       For example, a link (<a> tag) might have {"href": "https://www.google.com"}
-
 def markdown_to_html_node(markdown):
     blocks = markdown_to_blocks(markdown)
     block_nodes = []

@@ -1,1 +1,1 @@
-python3 src/markdown_to_blocks.py
+python3 src/main.py

@@ -1,9 +1,11 @@
 from textnode import TextNode, TextType
+from static_folder_to_public import static_folder_to_public_folder
 
-print('hello world')
+
+print('Robot Voice: "Static Site Generator... Initializing..."')
 
 def main():
-    print(TextNode('Blah blah, anchor text, blah blah', TextType.BOLD, "https://www.boot.dev"))
+    static_folder_to_public_folder()
   
 
 main()
