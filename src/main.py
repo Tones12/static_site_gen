@@ -7,7 +7,7 @@ print('Robot Voice: "Static Site Generator... Initializing..."')
 def main():
     
     if len(sys.argv) > 1:
-        basepath = {sys.argv[1]}
+        basepath = sys.argv[1]
     else:
         basepath = '/'
     
