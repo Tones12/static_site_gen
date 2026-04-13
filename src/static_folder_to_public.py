@@ -3,7 +3,7 @@ import shutil
 
 
 def static_folder_to_public_folder():
-    public_path = 'public'
+    public_path = 'docs'
     static_path = 'static'
 
     if not os.path.exists(static_path):
