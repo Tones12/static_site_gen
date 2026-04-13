@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
 
     print(f'Generating page from {from_path} to {dest_path} using {template_path}')
 
@@ -25,7 +25,9 @@ def generate_page(from_path, template_path, dest_path):
    
     template = template.replace("{{ Title }}", title)
     template = template.replace("{{ Content }}", html)
-    
+    template = template.replace('href="/', f'href="{basepath}')
+    template = template.replace('src="/', f'src="{basepath}')
+        
     directory = os.path.dirname(dest_path)
     os.path.isdir(directory) or os.makedirs(directory)
     
@@ -34,7 +36,7 @@ def generate_page(from_path, template_path, dest_path):
     html_file.write(template)
     html_file.close()
     
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
 
     #make list of files and folders in dir_path_content
     dir_list = os.listdir(dir_path_content)
@@ -46,5 +48,5 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
             generate_pages_recursive(dir_path_item, template_path, dest_dir_path_item)
         else:
             dest_dir_path_item = Path(dest_dir_path_item).with_suffix('.html')
-            generate_page(dir_path_item, template_path, dest_dir_path_item)
+            generate_page(dir_path_item, template_path, dest_dir_path_item, basepath)
     
